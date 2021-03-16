@@ -1,10 +1,10 @@
 //could be split into models and database
 const Sequelize = require("sequelize");
 const { INTEGER, STRING, BOOLEAN, ENUM } = Sequelize;
-const db = new Sequelize(process.env.DATABASE_URL || 'postgres://postgres:JerryPine@localhost/basketball');
-// const db = new Sequelize(
-// 	process.env.DATABASE_URL || "postgres://localhost/basketball"
-// );
+// const db = new Sequelize(process.env.DATABASE_URL || 'postgres://postgres:JerryPine@localhost/basketball');
+const db = new Sequelize(
+	process.env.DATABASE_URL || "postgres://localhost/basketball"
+);
 
 // Auth
 const bcrypt = require("bcrypt");
@@ -75,6 +75,7 @@ const Request = db.define(
 			type: INTEGER,
 		},
 	},
+	// timestamps will be added back at the end too confusing to look at right now
 	{ timestamps: false }
 );
 

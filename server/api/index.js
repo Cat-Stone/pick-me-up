@@ -20,10 +20,7 @@ async function authenticate(password, hash) {
 }
 
 const jwt = require("jsonwebtoken");
-const { jwtSecret } = require("../../secrets");
-
-
-// const jwtSecret2 = 'shh'
+const jwtSecret = require("../../secrets");
 
 async function generateAccessToken(user) {
 	// console.log('---------------------------');
@@ -308,7 +305,6 @@ app.get('/api/games/:id', async(req, res, next)=> {
   }
 });
 
-
 // creates a game
 app.post("/api/games", async (req, res, next) => {
 	try {
@@ -340,6 +336,32 @@ app.get('/api/user_games', async(req, res, next)=> {
     next(ex);
   }
 });
+
+//gets all games that were played for a user, 
+//uses game final score not null to determine if a game was played
+app.get('/api/user_games/user/:userId', async(req, res, next)=> {
+  try {
+    res.send(await UserGame.findAll({ 
+			where: {
+        userId: req.params.userId
+      },
+			include: [{
+				model: Game,
+				where: {
+					finalScore: {[Op.not]: null}
+				}
+			},
+		{
+			// don't think we need this just wanted to try
+			model: User
+		}]
+		}));
+  }
+  catch(ex){
+    next(ex);
+  }
+});
+
 
 //gets players of a single game
 app.get('/api/user_games/:gameId/players', async(req, res, next)=> {

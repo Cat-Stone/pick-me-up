@@ -34,16 +34,16 @@ const syncAndSeed = async()=> {
     await User.create({ age, description, email, height, name, password: '123'});
   }
   //10 generic requests closed request so past requests
-  for (let i = 1; i<= 10; i++){
-    // let email = "test"+i+"@email.com";
-    await Request.create({ location: 'COURT 1', open: false, time: i, userId: i});
-  }
+  // for (let i = 1; i<= 10; i++){
+  //   // let email = "test"+i+"@email.com";
+  //   await Request.create({ location: 'COURT 1', open: false, time: i, userId: i});
+  // }
   //8 generic open requests
   for (let i = 1; i<= 8; i++){
     // let email = "test"+i+"@email.com";
     await Game.create({location: 'COURT 1', time: 9-i});
     await UserGame.create({ userId: i, gameId: i });
-    await Request.create({ location: 'COURT 1', time: 9-i, userId: i, gameId: i});
+    // await Request.create({ location: 'COURT 1', time: 9-i, userId: i, gameId: i});
   }
 
   //creating some data for user
@@ -53,23 +53,25 @@ const syncAndSeed = async()=> {
   await Game.create({location: 'COURT 1', time: 3});
   await UserGame.create({ userId: 10, gameId: 9 });
   await UserGame.create({ userId: 9, gameId: 9 });
-  await Request.create({ location: 'COURT 1', time: 3, userId: 10, gameId: 9});
-  await Request.create({ location: 'COURT 1', time: 3, userId: 9, gameId: 9});
+  // await Request.create({ location: 'COURT 1', time: 3, userId: 10, gameId: 9});
+  // await Request.create({ location: 'COURT 1', time: 3, userId: 9, gameId: 9});
 
   // a finished game
   await Game.create({ winner: 'TEAM A', finalScore: '100 - 2', done: true, location: 'COURT 1', open: false, time: 1 });
-  await UserGame.create({ userId: 1, gameId: 10 });
-  await UserGame.create({ userId: 2, gameId: 10 });
-  await UserGame.create({ userId: 3, gameId: 10 });
-  await UserGame.create({ userId: 4, gameId: 10 });
+  await UserGame.create({ userId: 1, gameId: 10, team: 'TEAM A' });
+  await UserGame.create({ userId: 2, gameId: 10, team: 'TEAM A'  });
+  await UserGame.create({ userId: 3, gameId: 10, team: 'TEAM B'  });
+  await UserGame.create({ userId: 4, gameId: 10, team: 'TEAM B'  });
+
+
 
   // with scores and two people who were wait listed  
-  await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 1, gameId: 10, team: 'TEAM A', baskets: 98});
-  await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 2, gameId: 10, team: 'TEAM A', baskets: 2});
-  await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 3, gameId: 10, team: 'TEAM B', baskets: 0});
-  await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 4, gameId: 10, team: 'TEAM B', baskets: 2});
-  await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 5, gameId: 10, waitlist: true});
-  await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 6, gameId: 10, waitlist: true});
+  // await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 1, gameId: 10, team: 'TEAM A', baskets: 98});
+  // await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 2, gameId: 10, team: 'TEAM A', baskets: 2});
+  // await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 3, gameId: 10, team: 'TEAM B', baskets: 0});
+  // await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 4, gameId: 10, team: 'TEAM B', baskets: 2});
+  // await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 5, gameId: 10, waitlist: true});
+  // await Request.create({ location: 'COURT 1', open: false, time: 1, userId: 6, gameId: 10, waitlist: true});
 
 
 
@@ -80,11 +82,11 @@ const syncAndSeed = async()=> {
   await UserGame.create({ userId: 3, gameId: 11 });
   await UserGame.create({ userId: 1, gameId: 11 });
 
-  await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 5, gameId: 11});
-  await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 6, gameId: 11});
-  await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 3, gameId: 11});
-  await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 1, gameId: 11});
-  await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 8, gameId: 11, waitlist: true});1
+  // await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 5, gameId: 11});
+  // await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 6, gameId: 11});
+  // await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 3, gameId: 11});
+  // await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 1, gameId: 11});
+  // await Request.create({ location: 'COURT 1', open: false, time: 9, userId: 8, gameId: 11, waitlist: true});1
 
 
   // another random game finished game
@@ -94,14 +96,30 @@ const syncAndSeed = async()=> {
   await UserGame.create({ userId: 8, gameId: 12 });
   await UserGame.create({ userId: 7, gameId: 12 });
   // with scores and two people who were wait listed  
-  await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 10, gameId: 12, team: 'TEAM A', baskets: 32});
-  await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 9, gameId: 12, team: 'TEAM A', baskets: 10});
-  await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 8, gameId: 12, team: 'TEAM B', baskets: 28});
-  await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 7, gameId: 12, team: 'TEAM B', baskets: 32});
-  await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 4, gameId: 12, waitlist: true});
-  await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 1, gameId: 12, waitlist: true});
-  
+  // await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 10, gameId: 12, team: 'TEAM A', baskets: 32});
+  // await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 9, gameId: 12, team: 'TEAM A', baskets: 10});
+  // await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 8, gameId: 12, team: 'TEAM B', baskets: 28});
+  // await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 7, gameId: 12, team: 'TEAM B', baskets: 32});
+  // await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 4, gameId: 12, waitlist: true});
+  // await Request.create({ location: 'COURT 2', open: false, time: 2, userId: 1, gameId: 12, waitlist: true});
+    // a finished game
+    await Game.create({ winner: 'TEAM B', finalScore: '44 - 18', done: true, location: 'COURT 3', open: false, time: 1 });
+    await UserGame.create({ userId: 1, gameId: 13, team: 'TEAM A' });
+    await UserGame.create({ userId: 2, gameId: 13, team: 'TEAM A'  });
+    await UserGame.create({ userId: 3, gameId: 13, team: 'TEAM B'  });
+    await UserGame.create({ userId: 4, gameId: 13, team: 'TEAM B'  });
 
+    await Game.create({ winner: 'TEAM B', finalScore: '67 - 45', done: true, location: 'COURT 5', open: false, time: 6 });
+    await UserGame.create({ userId: 1, gameId: 14, team: 'TEAM A' });
+    await UserGame.create({ userId: 2, gameId: 14, team: 'TEAM A'  });
+    await UserGame.create({ userId: 3, gameId: 14, team: 'TEAM B'  });
+    await UserGame.create({ userId: 4, gameId: 14, team: 'TEAM B'  });
+
+    await Game.create({ winner: 'TEAM A', finalScore: '123 - 111', done: true, location: 'COURT 4', open: false, time: 3 });
+    await UserGame.create({ userId: 1, gameId: 15, team: 'TEAM A' });
+    await UserGame.create({ userId: 2, gameId: 15, team: 'TEAM A'  });
+    await UserGame.create({ userId: 3, gameId: 15, team: 'TEAM B'  });
+    await UserGame.create({ userId: 4, gameId: 15, team: 'TEAM B'  });
 };
 
 const init = async () => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import GameCard from './GameCard';
-import { loadRequestsForUser, loadGames, loadUser } from '../store/';
+import { loadGamesForUser, loadGames, loadUser } from '../store/';
 
 
 //so at this point we should have a user ID from being logged in
@@ -20,12 +20,12 @@ export class MyStats extends Component{
 
   render(){
     // const { user, game, request } = this.props;
-    // console.log(this.props)
+    console.log(this.props)
     let user = this.props.users.single;
-    let game = this.props.games[0] || {};
-    // console.log(game);
+    let games = this.props.games
+    console.log(games);
     // this is just the  one we started with not how it's really done
-    const request = this.props.requests.individual[2]  || {};
+    const request =  {};
     // console.log(request);
     return (
         <div className='container'>
@@ -47,9 +47,22 @@ export class MyStats extends Component{
             </div>
           </div>
           <div className='card'>
-            <GameCard game={game} request={request}/>
-            <GameCard game={game} request={request}/> 
+            {/* <GameCard game={game} request={request}/>  */}
+            {/* <GameCard game={game} request={request}/>  */}
           </div>
+          <div>
+                <ul>
+                    {  
+                        games.map( game => { 
+                            return (
+                                <li key={ game.gameId }>
+                                    winner: { game.game.winner } | final score: { game.game.finalScore } | you played on team: { game.team }  
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+            </div>
         </div>
     );
   }
@@ -67,8 +80,8 @@ const mapDispatchToProps = (dispatch) => {
     
     bootstrap: ()=> {
       dispatch(loadUser(4));
-      dispatch(loadRequestsForUser(4));
-      dispatch(loadGames());
+      dispatch(loadGamesForUser(4));
+      // dispatch(loadGames());
     }
   };
 }

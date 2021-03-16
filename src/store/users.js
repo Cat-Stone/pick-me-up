@@ -59,7 +59,7 @@ const _loadUser = (user) =>{
 export const loadUser = (userId) =>{
     return async(dispatch)=>{
         const user = (await axios.get(`/api/users/${userId}`)).data;
-        // console.log(users);
+        // console.log(user);
         dispatch(_loadUser(user));
     }
 };
