@@ -20,12 +20,14 @@ class Home extends Component{
     // console.log(Object.values(users))
     // console.log(users.single)
     let user = users.single;
+    console.log(user);
     // console.log(Object.values(users));
     return (
       <div >
         <center>
-        Hello, { user.name }!
-        {/* <GamesHosted /> */}
+        { user.name ?
+          (<p>Hello, { user.name }!</p>) : (<p>Welcome stranger</p>)
+        }
         </center>
         <center>
         <div id= 'pick-up'className='border text-center mb-3 home-hover' style={{ width: 275 + 'px' }, {fontSize: 3 + 'rem'}} > 

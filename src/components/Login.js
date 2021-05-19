@@ -33,6 +33,7 @@ const Login = () => {
 				const request = { email, password };
 				console.log(request);
 				const response = await axios.post("/api/login", request);
+				// console.log(response.data);
 				localStorage.setItem("pickmeup-token", response.data.token);
 				dispatch(loadUser(response.data.id));
 				setError("Success");

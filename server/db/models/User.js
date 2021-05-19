@@ -33,6 +33,7 @@ const User = db.define("user", {
 	},
 	photo: {
 		type: STRING,
+		defaultValue: "/images/default-user-image.png"
 	},
 	admin: {
 		type: BOOLEAN,

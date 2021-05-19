@@ -16,7 +16,7 @@ export class Game extends Component{
   constructor(props){
     super(props);
     this.state = {
-      location: this.props.game.location ? this.props.game.location : '',
+      location: this.props.game.location ? this.props.game.location : null,
       dateAndTime: this.props.game.dateAndTime ? this.props.game.dateAndTime : '',
       time: this.props.game.time ? this.props.game.time : '',
       finalScore: this.props.game.finalScore ? this.props.game.finalScore : '',
@@ -25,13 +25,15 @@ export class Game extends Component{
       error: '',
       zipcode: '',
       courts: [],
-      searched: false
+      searched: false,
+      startLocation: this.props.game.location ? this.props.game.location : null
   };
 
   this.onChange = this.onChange.bind(this);
   this.onSave = this.onSave.bind(this);
   this.courtSubmit = this.courtSubmit.bind(this)
   this.handleInputs = this.handleInputs.bind(this)
+  this.handleMarkers = this.handleMarkers.bind(this)
 }
 componentDidUpdate(prevProps){
   //does not mater for the moment as refresh just logs you off
@@ -46,6 +48,7 @@ onChange(ev){
   this.setState(change);
 }
 async onSave(ev){
+  console.log(this.state)
   ev.preventDefault();
   try {
       await this.props.update(this.props.game.id, this.state);
@@ -64,6 +67,9 @@ async courtSubmit(ev){
 handleInputs(ev){
   const {name, value} = ev.target
   this.setState({[name] : value})
+}
+handleMarkers(court){
+  this.setState({location: court.objectid})
 }
 
   render(){
@@ -103,21 +109,28 @@ handleInputs(ev){
                 ): (
                   <div className='courtFinder'>
                     <div className= 'courtForm'>
-                      <label htmlFor='court'>Court:</label>
-                      <select onChange={this.handleInputs} name='location' value={ location }>
+                    <label htmlFor='court'>Court:</label>
+                    <select onChange={this.handleInputs} name='location' >
+                      {this.state.location !== this.state.startLocation ? (
+                        <option value={this.state.location} >Court: {this.state.location}</option>
+                      ): (
                         <option>Select One</option>
-                        {this.state.courts.map((court, idx)=>{
-                          return(<option key={idx} value={idx} >Court: {court.objectid}</option>)
-                        })}
-                      </select>      
+                      )}
+                      {this.state.courts.map((court, idx)=>{
+                        if(court.objectid === this.state.location){
+                          return
+                        }else{
+                          return(<option key={idx} value={court.objectid} >Court: {court.objectid}</option>)
+                        }
+                      })}
+                    </select>     
                     </div>
                     <div className='courtMap'>
-                      <CourtMap courts={this.state.courts}/>
+                      <CourtMap courts={this.state.courts} handleMarkers={this.handleMarkers}/>
                     </div>
                   </div>
                 )}
-                <label>Current Location:</label>
-                <input name='location' value={ location } onChange = { onChange }/>
+                <p>Current Location: {this.state.startLocation}</p>
                 <br/>
                 <label htmlFor='date'>Date and Time:</label>
                 <hr/>
@@ -202,4 +215,3 @@ const mapDispatchToProps = (dispatch, { history }) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
-

@@ -7,7 +7,6 @@ const MAP_API = process.env.MAP_API
 
 const Map = withScriptjs(withGoogleMap((props) =>{
   const courts = props.courts
-  console.log(courts)
   const center = courts[0]
     return (
       <GoogleMap zoom={14} center={ { lat:  center.lat * 1, lng: center.long * 1 } } >

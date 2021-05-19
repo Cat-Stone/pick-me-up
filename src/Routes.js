@@ -12,6 +12,7 @@ import {
 	SignUp,
 	FindGame,
 	MyGames,
+	Chat
 } from "./components";
 
 /**
@@ -32,6 +33,7 @@ class Routes extends Component {
 				<Route path="/games/:id" component={Game} />
 				<Route path="/stats" component={MyStats} />
 				<Route path="/request" component={RequestForm} />
+				<Route path='/chat/:id' component={ Chat } />
 				<Route exact path="/account" component={MyProfile} />
 				<Route path="/" component={Home} />
 				{/* <Route exact path='/account' component={ MyProfile } /> */}

@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import GameCard from "./GameCard";
 import { loadOpenGamesForUser } from "../store/games";
 import axios from "axios";
-import GameMap from './GameMap'
+import GameMap from './GameMap';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 class MyGames extends Component {
 	constructor() {
@@ -23,23 +24,6 @@ class MyGames extends Component {
 		this.props.loadOpenGamesForUser(this.props.user.id, token);
 	}
 
-//               return (
-//                 <div key={game.id} className='card-body' >
-//                   <GameCard game={game} players={players} openGame={true}/>
-//                   <div>
-//                     <center> 
-//                       <button type='button' className='text-center btn btn-primary' onClick={()=>leaveGame(game)}>Leave this game</button> 
-//                       </center>
-//                   </div>
-//                 </div>
-//               )
-//             })
-//           }
-//         </div>
-//       </div>
-//     );
-//   }
-// };
 	render() {
 		const { games, user } = this.props;
 		const { leaveGame } = this;
@@ -59,9 +43,20 @@ class MyGames extends Component {
 												<GameCard game={game} players={players} openGame={true} />
 												<div >
 													<center>
-													<button type='button' className='text-center btn btn-primary' onClick={() => leaveGame(game)}>
-														Leave this game
-													</button>
+														<button type='button' className='text-center btn btn-primary' onClick={() => leaveGame(game)}>
+															Leave this game
+														</button>
+														<Link 
+															//this is setting the url path and persisting gameid in state when chat loads
+															to={{ 
+																pathname:`/chat/${game.chatId}`,
+																state: { gameId: game.id }
+															}}
+														>
+															<button className='text-center btn btn-primary'>
+																Chat
+															</button>
+														</Link>
 													</center>
 												</div>
 											</div>

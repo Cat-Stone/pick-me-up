@@ -3,6 +3,7 @@ import axios from "axios";
 // can I just add a wins game here??
 const LOAD_GAMES = "LOAD_GAMES";
 const LOAD_GAMES_FOR_USER = "LOAD_GAMES_FOR_USER";
+const LOAD_SINGLE_GAME = "LOAD_SINGLE_GAME";
 const LOAD_CLOSED_GAMES = "LOAD_CLOSED_GAMES";
 const LOAD_HOSTED_GAMES = "LOAD_CLOSED_GAMES";
 const CREATE_GAME = "CREATE_GAME";
@@ -10,7 +11,7 @@ const DESTROY_GAME = "DESTROY_GAME";
 const UPDATE_GAME = "UPDATE_GAME";
 
 //*************************************************
-const intialState = { open: [], openForUser: [], closed: [], hosted: [] };
+const intialState = { open: [], openForUser: [], closed: [], hosted: [], single: {} };
 
 const gamesReducer = (state = intialState, action) => {
 	if (action.type === LOAD_GAMES) {
@@ -18,6 +19,9 @@ const gamesReducer = (state = intialState, action) => {
 	}
 	if (action.type === LOAD_GAMES_FOR_USER) {
 		state.openForUser = action.games;
+	}
+	if (action.type === LOAD_SINGLE_GAME) {
+		state.single = action.game;
 	}
 	if (action.type === LOAD_CLOSED_GAMES) {
 		state.closed = action.games;
@@ -43,6 +47,13 @@ const _loadGamesForUser = (games) => {
 	return {
 		type: LOAD_GAMES_FOR_USER,
 		games,
+	};
+};
+
+const _loadSingleGame = (game) => {
+	return {
+		type: LOAD_SINGLE_GAME,
+		game,
 	};
 };
 
@@ -81,6 +92,13 @@ export const loadOpenGames = (zipcode) => {
 		dispatch(_loadGames(games));
 	};
 };
+
+export const loadSingleGame = (userId) => {
+	return async (dispatch) => {
+		const game = (await axios.get(`/api/games/${userId}`)).data;
+		dispatch(_loadSingleGame(game));
+	}
+}
 
 export const loadAllOpenGames = () => {
 	return async (dispatch) => {
@@ -162,6 +180,7 @@ export const updateGame = (id, state, history) => {
 		// console.log(state)
 		// console.log(host);
 		loadHostedGames(host);
+		loadSingleGame(id)
 		//dispatch(_createGame(game));
 		history.push("/gameshosted");
 	};

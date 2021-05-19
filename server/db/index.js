@@ -1,5 +1,6 @@
 const db = require("./db");
 const Game = require("./models/Game");
+const Message = require("./models/Message");
 const Request = require("./models/Request");
 const UserGame = require("./models/UserGame");
 const User = require("./models/User");
@@ -13,6 +14,7 @@ module.exports = {
 		Request,
 		Game,
 		UserGame,
+		Message
 	},
 };
 
@@ -30,3 +32,9 @@ User.hasMany(UserGame);
 UserGame.belongsTo(User);
 Game.hasMany(UserGame);
 UserGame.belongsTo(Game);
+
+// Message associations
+Message.belongsTo(User);
+Message.belongsTo(Game);
+User.hasMany(Message);
+Game.hasMany(Message);

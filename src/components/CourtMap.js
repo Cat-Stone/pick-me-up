@@ -6,7 +6,6 @@ const MAP_API = process.env.MAP_API
 
 const Map = withScriptjs(withGoogleMap((props) =>{  
   const courts = props.courts  
-  console.log("COURTS", courts);
   const center = courts[0].the_geom.coordinates[0][0][0]
     return (
       <GoogleMap zoom={14} center={ { lat:  center[1]*1, lng: center[0]*1 } } >
@@ -14,7 +13,11 @@ const Map = withScriptjs(withGoogleMap((props) =>{
           const coord = court.the_geom.coordinates[0][0][0]
           return(
             <div>
-              <Marker key={court.objectid} position={{lat: coord[1]*1, lng: coord[0]*1}} onClick={(ev)=>props.setCourt(ev,court)}/>
+              <Marker key={court.objectid} position={{lat: coord[1]*1, lng: coord[0]*1}} onClick={(ev)=>{
+                props.setCourt(ev,court)
+                props.handleMarkers(court)
+              }}
+              />
               {props.selectedCourt === court && (
                 <InfoWindow
                 // marker= {props.marker}
@@ -68,6 +71,7 @@ export default class CourtMap extends React.Component{
       <div className="map-container">
         <Map
            courts={this.props.courts}
+           handleMarkers = {this.props.handleMarkers}
            marker= {this.state.selectedMarker}
            selectedCourt={this.state.selectedCourt}
            setCourt={this.setCourt}
